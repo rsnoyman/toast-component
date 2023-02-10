@@ -9,9 +9,9 @@ function ToastProvider({ children }) {
     const nextToasts = [
       ...toasts,
       {
+        id: crypto.randomUUID(),
         message,
         variant,
-        id: crypto.randomUUID(),
       },
     ];
     setToasts(nextToasts);
