@@ -5,10 +5,23 @@ import Toast from "../Toast";
 import styles from "./ToastShelf.module.css";
 
 function ToastShelf() {
-  const { toasts } = React.useContext(ToastContext);
+  const { toasts, dismissAllToasts } = React.useContext(ToastContext);
+
+  React.useEffect(() => {
+    const escapeEvent = (event) => {
+      if (event.code === "Escape") dismissAllToasts();
+    };
+    window.addEventListener("keydown", escapeEvent);
+    return () => window.removeEventListener("keydown", escapeEvent);
+  }, [dismissAllToasts]);
 
   return (
-    <ol className={styles.wrapper}>
+    <ol
+      className={styles.wrapper}
+      role="region"
+      aria-live="assertive"
+      aria-label="Notification"
+    >
       {toasts.map(({ id, variant, message }) => (
         <li key={id} className={styles.toastWrapper}>
           <Toast id={id} variant={variant}>
